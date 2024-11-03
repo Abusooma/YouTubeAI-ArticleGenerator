@@ -3,3 +3,7 @@ pillow
 psycopg2
 dj-database-url
 python-dotenv
+pytube
+assemblyai
+requests
+pydub

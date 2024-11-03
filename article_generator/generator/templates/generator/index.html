@@ -1,0 +1,209 @@
+{% extends 'base.html' %} {% block content %}
+<div class="generator-container">
+  <div class="glass-card">
+    <h1 class="text-center mb-4">Créer votre Article</h1>
+
+    <div class="url-input-container">
+      <form id="generateForm" class="needs-validation" novalidate>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="fab fa-youtube"></i>
+          </span>
+          <input
+            type="url"
+            class="form-control"
+            id="youtubeUrl"
+            placeholder="Collez l'URL de votre vidéo YouTube ici"
+            required
+          />
+          <button class="btn btn-generate" type="submit">
+            <span class="btn-text">Générer</span>
+            <div class="btn-icon">
+              <i class="fas fa-magic"></i>
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Section de prévisualisation de l'article -->
+    <div id="articlePreview" class="article-preview-section d-none">
+
+      <!-- Corps de l'article -->
+      <div class="article-preview-content">
+        <!-- En-tête de l'article -->
+        <div class="article-header">
+          <!-- Image principale -->
+          <div class="featured-image-container mb-4">
+            <img
+              id="previewImage"
+              src=""
+              alt="Image de l'article"
+              class="featured-image"
+            />
+            <button
+              class="btn btn-yellow btn-sm image-refresh-btn"
+              onclick="regenerateImage()"
+            >
+              <i class="fas fa-sync-alt"></i> Régénérer l'image
+            </button>
+          </div>
+
+          <!-- Métadonnées de l'article -->
+          <div class="article-meta-header">
+            <!-- Tags -->
+            <div class="article-tags mb-3">
+              <span class="badge bg-yellow">Intelligence Artificielle</span>
+              <span class="badge bg-yellow">Marketing Digital</span>
+              <span class="badge bg-yellow">Analyse</span>
+            </div>
+
+            <!-- Titre -->
+            <h1 id="previewTitle" class="article-title mb-3"></h1>
+
+            <!-- Infos supplémentaires -->
+            <div class="article-meta">
+              <span class="author">
+                <i class="fas fa-user"></i>
+                <span id="previewAuthor"></span>
+              </span>
+              <span class="date">
+                <i class="fas fa-calendar"></i>
+                <span id="previewDate"></span>
+              </span>
+              <span class="reading-time">
+                <i class="fas fa-clock"></i>
+                <span id="previewReadingTime">8 min de lecture</span>
+              </span>
+            </div>
+
+            <!-- Résumé -->
+            <div class="article-summary mt-4">
+              <p id="previewSummary" class="lead"></p>
+            </div>
+
+            <!-- Points clés -->
+            <div class="key-points mt-4">
+              <h5>Points Clés :</h5>
+              <ul id="previewKeyPoints" class="key-points-list">
+                <!-- Points clés seront injectés ici -->
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="article-content mt-4">
+          <div id="previewContent"></div>
+        </div>
+
+        <!-- Pied d'article -->
+        <div class="article-footer mt-5">
+          <!-- Ressources -->
+          <div class="resources-section mb-4">
+            <h5>Ressources Complémentaires</h5>
+            <ul id="previewResources" class="resources-list">
+              <!-- Ressources seront injectées ici -->
+            </ul>
+          </div>
+
+          <!-- Partage -->
+          <div class="share-section">
+            <h5>Partager l'article</h5>
+            <div class="share-buttons">
+              <button class="btn btn-outline-light btn-sm">
+                <i class="fab fa-twitter"></i> Twitter
+              </button>
+              <button class="btn btn-outline-light btn-sm">
+                <i class="fab fa-linkedin"></i> LinkedIn
+              </button>
+              <button class="btn btn-outline-light btn-sm">
+                <i class="far fa-copy"></i> Copier le lien
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="article-actions mt-4">
+          <div class="d-flex justify-content-end gap-3">
+            <button
+              type="button"
+              class="btn btn-outline-light"
+              onclick="editArticle()"
+            >
+              <i class="fas fa-edit"></i> Modifier
+            </button>
+            <button
+              type="button"
+              class="btn btn-yellow"
+              onclick="publishArticle()"
+            >
+              <i class="fas fa-check"></i> Telecharger en PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="generationProgress" class="progress-container d-none">
+      <div class="progress-wrapper">
+        <div class="progress">
+          <div
+            class="progress-bar progress-bar-striped progress-bar-animated"
+            role="progressbar"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+        <div class="status-text">
+          <span id="statusMessage">Initialisation...</span>
+        </div>
+      </div>
+      <div class="progress-steps">
+        <div class="step" data-step="1">
+          <i class="fas fa-download"></i>
+          <span>Extraction</span>
+        </div>
+        <div class="step" data-step="2">
+          <i class="fas fa-headphones"></i>
+          <span>Transcription</span>
+        </div>
+        <div class="step" data-step="3">
+          <i class="fas fa-robot"></i>
+          <span>Génération</span>
+        </div>
+        <div class="step" data-step="4">
+          <i class="fas fa-image"></i>
+          <span>Images</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <i class="fas fa-bolt"></i>
+      <h3>Rapide</h3>
+      <p>Générez un article en quelques minutes</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-brain"></i>
+      <h3>Intelligent</h3>
+      <p>Contenu optimisé par IA</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-share-alt"></i>
+      <h3>Partageable</h3>
+      <p>Publication directe sur LinkedIn</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-edit"></i>
+      <h3>Personnalisable</h3>
+      <p>Modifiez selon vos besoins</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

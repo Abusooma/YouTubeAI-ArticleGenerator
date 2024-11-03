@@ -81,18 +81,6 @@ WSGI_APPLICATION = 'article_generator.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER': 'postgres',
-#         'PASSWORD': 'OnQRpELkXCFmTZHCkPDeUlfDVYlfgmYi',
-#         'HOST': 'postgres.railway.internal',
-#         'PORT': '5432'
-#     }
-# }
-
-
 database_url = os.getenv('DATABASE_URL')
 
 if not database_url:

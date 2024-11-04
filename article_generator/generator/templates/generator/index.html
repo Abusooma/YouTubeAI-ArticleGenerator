@@ -4,7 +4,8 @@
     <h1 class="text-center mb-4">Créer votre Article</h1>
 
     <div class="url-input-container">
-      <form id="generateForm" class="needs-validation" novalidate>
+      <form id="generateForm" data-youtube-url="" class="needs-validation" novalidate>
+        {% csrf_token %}
         <div class="input-group">
           <span class="input-group-text">
             <i class="fab fa-youtube"></i>

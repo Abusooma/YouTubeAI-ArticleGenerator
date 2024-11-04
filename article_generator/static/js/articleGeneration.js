@@ -22,6 +22,28 @@ class InlineArticleGenerator {
       generateForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const youtubeUrl = document.getElementById("youtubeUrl").value;
+        const endpointUrl = "/generate-article/";
+
+        try {
+          const response = await fetch(endpointUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": document.querySelector(
+                "[name=csrfmiddlewaretoken]"
+              ).value,
+            },
+            body: JSON.stringify({ link: youtubeUrl }),
+          });
+
+          const data = await response.json();
+
+          // blogContent.innerHTML = data.content;
+        } catch (error) {
+          console.error("Error occurred:", error);
+          alert("Something went wrong. Please try again later.");
+        }
+
         await this.generateArticle(youtubeUrl);
       });
     }

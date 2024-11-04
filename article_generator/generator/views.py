@@ -1,11 +1,14 @@
 import os
 import yt_dlp
+from dotenv import load_dotenv
 from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 import assemblyai as aai
 import json
+
+load_dotenv()
 
 
 def home(request):
@@ -53,7 +56,7 @@ def download_audio_and_title(link):
 
 def get_transcription(link):
     audio_file, title = download_audio_and_title(link)
-    aai.settings.api_key = "0f84d405e1144562b3d5c0ca6c00ccba"
+    aai.settings.api_key = os.getenv("ASSEMBLY_API_KEY")
 
     transcriber = aai.Transcriber()
     transcript = transcriber.transcribe(audio_file)

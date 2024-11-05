@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 import assemblyai as aai
+import openai
 import json
 
 load_dotenv()
@@ -25,9 +26,12 @@ def generate_article(request):
         return JsonResponse({'error': 'Invalid data sent'}, status=400)
 
     transcription, title = get_transcription(yt_link)
-    print(transcription)
+    
     if not transcription:
         return JsonResponse({'error': " Failed to get transcript"}, status=500)
+    
+    blog_content = get_blog_from_transcription(transcription=transcription)
+    print(blog_content)
 
 def download_audio_and_title(link):
     output_dir = os.path.join(settings.MEDIA_ROOT, 'yt_audios')
@@ -62,3 +66,62 @@ def get_transcription(link):
     transcript = transcriber.transcribe(audio_file)
 
     return transcript.text, title
+
+
+def get_blog_from_transcription(transcription):
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+
+    prompt = f"""Génère un article de blog professionnel à partir de cette transcription vidéo. Format de sortie JSON requis.
+
+FORMAT DE SORTIE :
+{{
+    "title": "Titre SEO optimisé (60-70 caractères)",
+    "tags": ["tag1", "tag2", "tag3"],
+    "author": "AI Content Expert",
+    "summary": "Résumé accrocheur (150-200 caractères)",
+    "readingTime": "X min de lecture",
+    "keyPoints": [
+        "Point clé 1",
+        "Point clé 2",
+        "Point clé 3"
+    ],
+    "content": "<h2>Section 1</h2><p>Contenu...</p>",
+    "resources": [
+        "Ressource 1",
+        "Ressource 2"
+    ]
+}}
+
+CONSIGNES :
+- Style naturel et engageant
+- Structure claire avec H2 et H3
+- Paragraphes courts
+- Ton professionnel mais conversationnel
+- 3-5 tags pertinents
+- 3-4 points clés
+- 2-3 ressources complémentaires
+
+TRANSCRIPTION :
+{transcription}"""
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Tu es un expert en rédaction web qui transforme des transcriptions vidéo en articles de blog structurés."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.7,
+            max_tokens=2000
+        )
+
+        return json.loads(response.choices[0].message.content)
+    except Exception as e:
+        print(f"Erreur lors de la génération de l'article : {str(e)}")
+        return None

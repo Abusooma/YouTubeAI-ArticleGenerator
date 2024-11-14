@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+
+{% block content %}
 <div class="generator-container">
   <div class="glass-card">
     <h1 class="text-center mb-4">Créer votre Article</h1>
@@ -42,12 +44,6 @@
               alt="Image de l'article"
               class="featured-image"
             />
-            <button
-              class="btn btn-yellow btn-sm image-refresh-btn"
-              onclick="regenerateImage()"
-            >
-              <i class="fas fa-sync-alt"></i> Régénérer l'image
-            </button>
           </div>
 
           <!-- Métadonnées de l'article -->
@@ -76,19 +72,6 @@
                 <i class="fas fa-clock"></i>
                 <span id="previewReadingTime">8 min de lecture</span>
               </span>
-            </div>
-
-            <!-- Résumé -->
-            <div class="article-summary mt-4">
-              <p id="previewSummary" class="lead"></p>
-            </div>
-
-            <!-- Points clés -->
-            <div class="key-points mt-4">
-              <h5>Points Clés :</h5>
-              <ul id="previewKeyPoints" class="key-points-list">
-                <!-- Points clés seront injectés ici -->
-              </ul>
             </div>
           </div>
         </div>
@@ -206,5 +189,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}

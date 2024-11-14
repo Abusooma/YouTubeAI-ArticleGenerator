@@ -1,0 +1,2 @@
+Erreur lors de la génération de l'article : argument should be a str object or an os.PathLike object returning str, not <class 'bytes'>
+Erreur lors de la génération de l'article : expected bytes, File found

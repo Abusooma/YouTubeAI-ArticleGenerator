@@ -45,7 +45,7 @@ class  Article(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='articles', on_delete=models.CASCADE)
 
     # ---------------------------------------------
-    # Champs neccessaires pour le referencement (SEO)
+    # Champs necessaires pour le referencement (SEO)
 
     class Meta:
         ordering = ['-created_at']
